@@ -5,9 +5,9 @@ import { Todo } from './todo.model';
 export class TodosService {
   private todos: Todo[] = [];
 
-  insertTodo(title: string, description: string) {
+  insertTodo(title: string) {
     const todoId = new Date().toString();
-    const newTodo = new Todo(todoId, title, description);
+    const newTodo = new Todo(todoId, title, false);
 
     this.todos.push(newTodo);
     return todoId;
@@ -22,21 +22,20 @@ export class TodosService {
     return { ...todo };
   }
 
-  updateTodo(todoId: string, title: string, description: string) {
+  updateTodo(todoId: string, title: string, done: boolean) {
     const [todo, index] = this.findTodo(todoId);
     const updatedTodo = { ...todo };
     if (title) {
       updatedTodo.title = title;
     }
-    if (description) {
-      updatedTodo.description = description;
-    }
+    updatedTodo.done = done;
+
     this.todos[index] = updatedTodo;
   }
 
   deleteTodo(todoId: string) {
     const [_, index] = this.findTodo(todoId);
-    this.todos.splice(index,1)
+    this.todos.splice(index, 1);
   }
 
   private findTodo(id: string): [Todo, number] {

@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Delete,
-  Render
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 
@@ -15,16 +14,12 @@ export class TodosController {
   constructor(private todosService: TodosService) {}
 
   @Post()
-  addTodo(
-    @Body('title') todoTitle: string,
-    @Body('description') todoDesc: string,
-  ): any {
-    const generaredId = this.todosService.insertTodo(todoTitle, todoDesc);
+  addTodo(@Body('title') todoTitle: string): any {
+    const generaredId = this.todosService.insertTodo(todoTitle);
     return { id: generaredId };
   }
 
   @Get()
-  @Render('home')
   getAllTodos() {
     const todos = this.todosService.getTodos();
     return { todos };
@@ -38,10 +33,10 @@ export class TodosController {
   @Patch(':id')
   updateTodo(
     @Param('id') todoId: string,
+    @Body('done') done: boolean,
     @Body('title') todoTitle: string,
-    @Body('description') todoDesc: string,
   ) {
-    this.todosService.updateTodo(todoId, todoTitle, todoDesc);
+    this.todosService.updateTodo(todoId, todoTitle, done);
     return null;
   }
 
