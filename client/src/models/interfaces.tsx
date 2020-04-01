@@ -4,6 +4,6 @@ export type TodoType = {
   done: boolean;
 };
 
-export interface RemoveTodo {
+export interface actionTodo {
   (id: string, index:number): void;
 }

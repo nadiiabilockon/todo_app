@@ -1,4 +1,8 @@
-button,
-input {
-  margin: 8px;
+.text-center{
+  text-align: center;
+}
+
+.cross-text{
+  text-decoration: line-through;
+  color: #858288;
 }

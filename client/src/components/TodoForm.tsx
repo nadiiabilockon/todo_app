@@ -2,6 +2,7 @@ import React from "react";
 import { IconButton, Paper, InputBase } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+
 interface ToggleProps {
   addTodo: (value: string) => void;
 }
@@ -12,7 +13,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "2px 4px",
       display: "flex",
       alignItems: "center",
-      width: 400
     },
     input: {
       marginLeft: theme.spacing(1),
@@ -27,6 +27,13 @@ export const TodoForm = (props: ToggleProps) => {
   const classes = useStyles();
   let input: HTMLInputElement;
 
+  const handleSubmit = () => {
+    if (input.value) {
+      props.addTodo(input.value);
+      input.value = "";
+    }
+  };
+
   return (
     <Paper className={classes.root}>
       <InputBase
@@ -38,18 +45,14 @@ export const TodoForm = (props: ToggleProps) => {
         inputProps={{ "aria-label": "search google maps" }}
         onKeyPress={event => {
           if (event.key === "Enter") {
-            props.addTodo(input.value);
-            input.value = "";
+            handleSubmit();
           }
         }}
       />
       <IconButton
         className={classes.iconButton}
         aria-label="add"
-        onClick={() => {
-          props.addTodo(input.value);
-          input.value = "";
-        }}
+        onClick={handleSubmit}
       >
         <AddIcon />
       </IconButton>

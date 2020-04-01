@@ -1,22 +1,28 @@
 import React from "react";
-import { TodoType, RemoveTodo } from "../models/interfaces";
+import { TodoType, actionTodo } from "../models/interfaces";
 import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Checkbox
+  Checkbox,
+  ListItemSecondaryAction,
+  IconButton
 } from "@material-ui/core";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 export const Todo = (props: {
   todo: TodoType;
   index: number;
-  remove: RemoveTodo;
+  doneHandler: actionTodo;
+  removeHandler: (id:string) => void;
+  clickedId: string;
 }) => {
   return (
     <ListItem
       dense
+      disabled={props.clickedId === props.todo.id}
       button
-      onClick={() => props.remove(props.todo.id, props.index)}
+      onClick={() => props.doneHandler(props.todo.id, props.index)}
     >
       <ListItemIcon>
         <Checkbox
@@ -27,7 +33,18 @@ export const Todo = (props: {
           inputProps={{ "aria-labelledby": props.todo.id }}
         />
       </ListItemIcon>
-      <ListItemText id={props.todo.id} primary={props.todo.title} />
+      <ListItemText
+        id={props.todo.id}
+        primary={props.todo.title}
+        className={props.todo.done ? "cross-text" : ""}
+      />
+      <ListItemSecondaryAction
+        onClick={() => props.removeHandler(props.todo.id)}
+      >
+        <IconButton edge="end" aria-label="comments">
+          <DeleteOutlineIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
     </ListItem>
   );
 };

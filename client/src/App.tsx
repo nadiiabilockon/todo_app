@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Container, Grid } from "@material-ui/core";
+import "./App.css";
 import { Title } from "./components/Title";
 import { TodoForm } from "./components/TodoForm";
 import { TodoList } from "./components/TodoList";
 import { TodoType } from "./models/interfaces";
-import { Container } from "@material-ui/core";
+import MainAppBar from "./components/AppBar";
+
 
 function App() {
   const [todos, setTodos] = useState<TodoType[]>([]);
+  const [clickedId, setClickedId] = useState("");
+
   const apiUrl = "http://localhost:8080/todos";
-  let muted = false;
 
   const fetchTodos = async () => {
     const response = await axios.get(apiUrl);
@@ -29,10 +33,12 @@ function App() {
     });
   };
 
-  const handleRemove = (id: string, index: number) => {
-    muted = true;
-    const remainder = todos[index];
+  const doneHandler = (id: string, index: number) => {
+    if (clickedId) return;
 
+    setClickedId(id);
+
+    const remainder = todos[index];
     const newStatus = !remainder?.done;
 
     setTodos(
@@ -42,8 +48,14 @@ function App() {
       })
     );
 
-    axios.patch(apiUrl + "/" + id, { done: newStatus }).then(res => {
-      console.log(res);
+    axios.patch(apiUrl + "/" + id, { done: newStatus }).then(() => {
+      setClickedId("");
+    });
+  };
+
+  const removeHandler = (id: string) => {
+    axios.delete(apiUrl + "/" + id).then(() => {
+      setTodos(todos.filter(item => item.id !== id));
     });
   };
 
@@ -55,10 +67,22 @@ function App() {
   }, 0);
 
   return (
-    <Container fixed>
-      <Title todoCount={activeCount} />
-      <TodoForm addTodo={addTodo} />
-      {todos.length ? <TodoList todos={todos} remove={handleRemove} /> : null}
+    <Container maxWidth="xl">
+      <MainAppBar />
+      <Grid container justify="center">
+        <Grid item xs={12} md={8} lg={6}>
+          <Title todoCount={activeCount} />
+          <TodoForm addTodo={addTodo} />
+          {todos.length ? (
+            <TodoList
+              todos={todos}
+              doneHandler={doneHandler}
+              removeHandler={removeHandler}
+              clickedId={clickedId}
+            />
+          ) : null}
+        </Grid>
+      </Grid>
     </Container>
   );
 }
