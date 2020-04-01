@@ -1,5 +1,5 @@
-import React from "react";
-import { TodoType, actionTodo } from "../models/interfaces";
+import React, { useContext } from "react";
+import { TodoType } from "../models/interfaces";
 import {
   ListItem,
   ListItemIcon,
@@ -9,20 +9,19 @@ import {
   IconButton
 } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import { TodoContext } from "../App";
 
-export const Todo = (props: {
-  todo: TodoType;
-  index: number;
-  doneHandler: actionTodo;
-  removeHandler: (id:string) => void;
-  clickedId: string;
-}) => {
+export const Todo = (props: { todo: TodoType; index: number }) => {
+  const { clickedId, doneHandler, removeHandler } = useContext(TodoContext);
+
   return (
     <ListItem
       dense
-      disabled={props.clickedId === props.todo.id}
+      disabled={clickedId === props.todo.id}
       button
-      onClick={() => props.doneHandler(props.todo.id, props.index)}
+      onClick={
+        doneHandler ? () => doneHandler(props.todo.id, props.index) : () => {}
+      }
     >
       <ListItemIcon>
         <Checkbox
@@ -39,7 +38,7 @@ export const Todo = (props: {
         className={props.todo.done ? "cross-text" : ""}
       />
       <ListItemSecondaryAction
-        onClick={() => props.removeHandler(props.todo.id)}
+        onClick={removeHandler ? () => removeHandler(props.todo.id) : () => {}}
       >
         <IconButton edge="end" aria-label="comments">
           <DeleteOutlineIcon />

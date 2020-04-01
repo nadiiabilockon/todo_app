@@ -8,6 +8,14 @@ import { TodoList } from "./components/TodoList";
 import { TodoType } from "./models/interfaces";
 import MainAppBar from "./components/AppBar";
 
+type ContextProps = {
+  todos: TodoType[];
+  clickedId: string;
+  doneHandler(id: string, index: number): void;
+  removeHandler(id: string): void;
+};
+
+export const TodoContext = React.createContext<Partial<ContextProps>>({});
 
 function App() {
   const [todos, setTodos] = useState<TodoType[]>([]);
@@ -73,14 +81,16 @@ function App() {
         <Grid item xs={12} md={8} lg={6}>
           <Title todoCount={activeCount} />
           <TodoForm addTodo={addTodo} />
-          {todos.length ? (
-            <TodoList
-              todos={todos}
-              doneHandler={doneHandler}
-              removeHandler={removeHandler}
-              clickedId={clickedId}
-            />
-          ) : null}
+          <TodoContext.Provider
+            value={{
+              todos,
+              removeHandler,
+              doneHandler,
+              clickedId
+            }}
+          >
+            {todos.length ? <TodoList /> : null}
+          </TodoContext.Provider>
         </Grid>
       </Grid>
     </Container>
