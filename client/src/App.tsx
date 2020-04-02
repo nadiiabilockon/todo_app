@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Button } from "@material-ui/core";
 import "./App.css";
 import { Title } from "./components/Title";
 import { TodoForm } from "./components/TodoForm";
@@ -20,6 +20,7 @@ export const TodoContext = React.createContext<Partial<ContextProps>>({});
 function App() {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [clickedId, setClickedId] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
   const apiUrl = "http://localhost:8080/todos";
 
@@ -75,10 +76,13 @@ function App() {
   }, 0);
 
   return (
-    <Container maxWidth="xl">
-      <MainAppBar />
+    <Container maxWidth="xl" className={selectedValue}>
+      <MainAppBar
+        setSelectedValue={setSelectedValue}
+        selectedValue={selectedValue}
+      />
       <Grid container justify="center">
-        <Grid item xs={12} md={8} lg={6}>
+        <Grid item xs={12} md={8} lg={6} className="main-content">
           <Title todoCount={activeCount} />
           <TodoForm addTodo={addTodo} />
           <TodoContext.Provider

@@ -1,3 +1,10 @@
+#root, .MuiContainer-root{
+  height: 100%;
+}
+.main-content{
+  height: 100%;
+  background: #ffffff80;
+}
 .text-center{
   text-align: center;
 }
@@ -5,4 +12,24 @@
 .cross-text{
   text-decoration: line-through;
   color: #858288;
+}
+
+.ceramic-mug-on-white-background{
+  background-image: url("https://images.pexels.com/photos/768943/pexels-photo-768943.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+}
+
+.blue-body-of-wate{
+  background-image: url("https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+}
+
+.bridge-near-a-lake{
+  background-image: url("https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-size: cover;
+}
+
+.img-box{
+  width: 100px;
+  height: 100px;
 }
